@@ -10,6 +10,13 @@
             </ul>
         </template>
         <p v-else class="mt-4">No comments to display</p>
+
+        <a
+            href="#"
+            class="btn btn-light btn-block"
+            @click.prevent="loadMore"
+            v-if="meta.current_page < meta.last_page"
+        >Show More</a>
     </div>
 </template>
 
@@ -41,6 +48,12 @@
                 let comments = await axios.get(`${this.endpoint}?page=${page}`)
 
                 this.comments = comments.data.data
+                this.meta = comments.data.meta
+            },
+            async loadMore () {
+                let comments = await axios.get(`${this.endpoint}?page=${this.meta.current_page + 1}`)
+
+                this.comments.push(...comments.data.data)
                 this.meta = comments.data.meta
             },
             prependComment(comment) {
