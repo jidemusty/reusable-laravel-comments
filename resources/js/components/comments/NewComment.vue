@@ -30,6 +30,9 @@
 </template>
 
 <script>
+    import axios from 'axios'
+    import bus from '../../bus'
+
     export default {
         data () {
             return {
@@ -46,8 +49,13 @@
             }
         },
         methods: {
-            store () {
-                console.log('store', this.form.body)
+            async store () {
+                let comment = await axios.post(this.endpoint, this.form)
+
+                bus.$emit('comment:stored', comment.data.data)
+
+                this.active = false;
+                this.form.body = ''
             }
         }
     }

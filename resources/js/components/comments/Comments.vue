@@ -1,11 +1,14 @@
 <template>
     <div>
-        <new-comment :endpoint="endpoint" />
+        <new-comment
+            :endpoint="endpoint"
+        />
     </div>
 </template>
 
 <script>
     import NewComment from './NewComment'
+    import bus from '../../bus'
 
     export default {
         props: {
@@ -16,6 +19,14 @@
         },
         components: {
             NewComment
+        },
+        methods: {
+            prependComment(comment) {
+                console.log(comment)
+            }
+        },
+        mounted () {
+            bus.$on('comment:stored', this.prependComment)
         }
     }
 </script>
