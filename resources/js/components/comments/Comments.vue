@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h3 class="mb-5">{{ meta.total }} comments</h3>
         <new-comment
             :endpoint="endpoint"
         />
@@ -21,7 +22,8 @@
     export default {
         data () {
             return {
-                comments: []
+                comments: [],
+                meta: {}
             }
         },
         props: {
@@ -37,7 +39,9 @@
         methods: {
             async loadComments (page = 1) {
                 let comments = await axios.get(`${this.endpoint}?page=${page}`)
+
                 this.comments = comments.data.data
+                this.meta = comments.data.meta
             },
             prependComment(comment) {
                 console.log(comment)

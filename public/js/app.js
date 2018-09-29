@@ -47360,6 +47360,10 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("h3", { staticClass: "mb-5" }, [
+        _vm._v(_vm._s(_vm.meta.total) + " comments")
+      ]),
+      _vm._v(" "),
       _c("new-comment", { attrs: { endpoint: _vm.endpoint } }),
       _vm._v(" "),
       _vm.comments.length
@@ -47423,6 +47427,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
 
 
 
@@ -47432,7 +47437,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            comments: []
+            comments: [],
+            meta: {}
         };
     },
 
@@ -47461,9 +47467,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                             case 2:
                                 comments = _context.sent;
 
-                                this.comments = comments.data.data;
 
-                            case 4:
+                                this.comments = comments.data.data;
+                                this.meta = comments.data.meta;
+
+                            case 5:
                             case 'end':
                                 return _context.stop();
                         }
