@@ -47556,6 +47556,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         }(),
         setReplying: function setReplying(comment) {
             this.reply = comment;
+        },
+        appendReply: function appendReply(_ref5) {
+            var comment = _ref5.comment,
+                reply = _ref5.reply;
+
+            console.log(this.comment.children);
+            _.find(this.comments, { id: comment.id }).children.push(reply);
         }
     },
     mounted: function mounted() {
@@ -47568,6 +47575,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         __WEBPACK_IMPORTED_MODULE_4__bus__["a" /* default */].$on('comment:reply-cancelled', function () {
             return _this.reply = null;
         });
+
+        __WEBPACK_IMPORTED_MODULE_4__bus__["a" /* default */].$on('comment:replied', this.appendReply);
     }
 });
 
@@ -48933,9 +48942,17 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Comment__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Comment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Comment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bus__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Comment__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Comment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Comment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bus__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 //
 //
 //
@@ -48961,6 +48978,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -48981,12 +48999,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     components: {
-        Comment: __WEBPACK_IMPORTED_MODULE_0__Comment___default.a
+        Comment: __WEBPACK_IMPORTED_MODULE_1__Comment___default.a
     },
     methods: {
-        store: function store() {},
+        store: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+                var reply;
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post("/comments/" + this.comment.id + "/replies", this.form);
+
+                            case 2:
+                                reply = _context.sent;
+
+
+                                __WEBPACK_IMPORTED_MODULE_2__bus__["a" /* default */].$emit('comment:replied', {
+                                    comment: this.comment,
+                                    reply: reply.data.data
+                                });
+
+                                this.cancel();
+
+                            case 5:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function store() {
+                return _ref.apply(this, arguments);
+            }
+
+            return store;
+        }(),
         cancel: function cancel() {
-            __WEBPACK_IMPORTED_MODULE_1__bus__["a" /* default */].$emit('comment:reply-cancelled');
+            __WEBPACK_IMPORTED_MODULE_2__bus__["a" /* default */].$emit('comment:reply-cancelled');
         }
     }
 });

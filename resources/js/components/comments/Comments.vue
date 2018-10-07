@@ -80,6 +80,10 @@
             },
             setReplying (comment) {
                 this.reply = comment
+            },
+            appendReply({ comment, reply }) {
+                console.log(this.comment.children);
+                _.find(this.comments, { id: comment.id }).children.push(reply)
             }
         },
         mounted () {
@@ -88,6 +92,8 @@
             bus.$on('comment:stored', this.prependComment)
             bus.$on('comment:reply', this.setReplying)
             bus.$on('comment:reply-cancelled', () => this.reply = null)
+
+            bus.$on('comment:replied', this.appendReply)
         }
     }
 </script>

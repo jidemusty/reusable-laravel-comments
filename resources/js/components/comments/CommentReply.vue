@@ -26,6 +26,7 @@
 <script>
     import Comment from "./Comment"
     import bus from "../../bus"
+    import axios from 'axios'
 
     export default {
         data() {
@@ -45,8 +46,15 @@
             Comment
         },
         methods: {
-            store() {
+            async store() {
+                let reply = await axios.post(`/comments/${this.comment.id}/replies`, this.form)
 
+                bus.$emit('comment:replied', {
+                    comment: this.comment,
+                    reply: reply.data.data
+                });
+
+                this.cancel()
             },
             cancel() {
                 bus.$emit('comment:reply-cancelled')
